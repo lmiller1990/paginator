@@ -19,7 +19,8 @@ export interface IDotsNode extends IPageNode {
 
 export interface INavigationNode extends IPageNode {
   type: "navigation";
-  value: "<" | "<<" | ">" | ">>";
+  action: 'previous' | 'next' | 'gotoFirst' | 'gotoLast'
+  symbol: "<" | "<<" | ">" | ">>";
 }
 
 export interface IPaginateOptions {
