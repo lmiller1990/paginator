@@ -1,0 +1,10 @@
+.d-flex {
+  display: flex;
+}
+
+.page-control {
+  border: 1px solid grey;
+  width: 40px;
+  height: 40px;
+  margin: 4px;
+}
