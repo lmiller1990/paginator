@@ -1,4 +1,5 @@
 import { paginate, IPageNode, TNode } from './paginate'
+import { createContext } from 'istanbul-lib-report';
 
 interface IListArgs {
   totalItems: number
@@ -124,6 +125,49 @@ describe.only('more than 7 pages', () => {
       { type: 'pageNumber', value: 100 },
     ])
 
+
+    expect([ actual[9], actual[10] ]).toEqual([ 
+      { type: 'navigation', value: '>' },
+      { type: 'navigation', value: '>>' },
+    ])
+  })
+
+  it('current page is in the middle', () => {
+    const list = createList({ totalItems: 1000 })
+    const currentPage = 500
+    const actual = paginate(list, { currentPage }, { perPage: 10 })
+
+    // Case 3.2: [1, 2, 3, 4, 5, 6, 7, 8 ..... 100] (100 pages)
+    // Current page is 500
+    // << | < | 1 | ... | 49 | 50 | 51 | ... | 100 | > | >>
+
+    expect([ actual[0], actual[1] ]).toEqual([ 
+      { type: 'navigation', value: '<<' },
+      { type: 'navigation', value: '<' },
+    ])
+
+    expect(actual[2]).toEqual(
+      { type: 'pageNumber', value: 1 },
+    )
+
+    expect(actual[3]).toEqual(
+      { type: 'dots', value: '...' },
+    )
+
+    expect([ actual[4], actual[5], actual[6] ]).toEqual([
+      { type: 'pageNumber', value: 49 },
+      { type: 'pageNumber', value: 50 },
+      { type: 'pageNumber', value: 51 },
+    ])
+
+    expect(actual[7]).toEqual(
+      { type: 'dots', value: '...' },
+    )
+
+
+    expect(actual[8]).toEqual(
+      { type: 'pageNumber', value: 100 },
+    )
 
     expect([ actual[9], actual[10] ]).toEqual([ 
       { type: 'navigation', value: '>' },
